@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
     public static GameController instance;
+    public int level;
 
     private void Awake()
     {
@@ -18,4 +20,10 @@ public class GameController : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
+    public void GameOver()
+    {
+        SceneManager.LoadScene(level);
+    }
 }
+
