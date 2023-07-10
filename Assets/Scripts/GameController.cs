@@ -6,7 +6,14 @@ using UnityEngine.SceneManagement;
 public class GameController : MonoBehaviour
 {
     public static GameController instance;
+
+    public GameObject apple;
+    public Sprite badAppleSprite;
+
     public int level;
+    public int applesAmount = 0;
+
+    public bool isGO;
 
     private void Awake()
     {
@@ -23,7 +30,20 @@ public class GameController : MonoBehaviour
 
     public void GameOver()
     {
+        applesAmount = 0;
+        isGO = true;
         SceneManager.LoadScene(level);
+    }
+
+    public void RestApple()
+    {
+        --applesAmount;
+
+        if(applesAmount == 0)
+        {
+            level++;
+            SceneManager.LoadScene(level);
+        }
     }
 }
 

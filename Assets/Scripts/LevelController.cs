@@ -6,9 +6,30 @@ using UnityEngine;
 public class LevelController : MonoBehaviour
 {
     public GameObject panel;
+    public GameObject startPanel;
+    public GameObject goPanel;
 
     public GameObject ball;
     public GameObject gameObjects;
+    public float ballScale;
+
+    private void Start()
+    {
+        if (GameController.instance.isGO)
+        {
+            goPanel.SetActive(true);
+            GameController.instance.isGO = false;
+        }
+        else
+        {
+            startPanel.SetActive(true);
+        }
+    }
+
+    private void Update()
+    {
+        if (Input.GetKey(KeyCode.Return) && panel.activeSelf == true) StartLevel();
+    }
 
     public void ExitGame()
     {
@@ -17,11 +38,10 @@ public class LevelController : MonoBehaviour
 
     public void StartLevel()
     {
-        Debug.Log("Start");
-
         panel.SetActive(false);
         gameObjects.SetActive(true);
 
-        Instantiate(ball, gameObjects.transform);
+        GameObject newBall = Instantiate(ball, gameObjects.transform);
+        newBall.transform.localScale = new Vector2(ballScale, ballScale);
     }
 }

@@ -5,9 +5,8 @@ using UnityEngine;
 public class Ball : MonoBehaviour
 {
     public Rigidbody2D rb;
-    [SerializeField] float maxSpeed;
+    [SerializeField] private float maxSpeed;
 
-    public UIController uiController;
     private void Update()
     {
         if (rb.velocity.magnitude > maxSpeed) rb.velocity = Vector3.ClampMagnitude(rb.velocity, maxSpeed);
@@ -16,6 +15,17 @@ public class Ball : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Floor")) GameController.instance.GameOver();
-        if (collision.gameObject.CompareTag("Apple")) Destroy(collision.gameObject);
+
+        if (collision.gameObject.CompareTag("Apple"))
+        {
+            Destroy(collision.gameObject);
+            GameController.instance.RestApple();
+        }
+
+        if (collision.gameObject.CompareTag("Paddle"))
+        {
+            if (!collision.gameObject.GetComponent<Paddle>().touchBall) 
+                collision.gameObject.GetComponent<Paddle>().touchBall = true;
+        }
     }
 }
