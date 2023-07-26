@@ -14,6 +14,7 @@ public class GameController : MonoBehaviour
     public int applesAmount = 0;
 
     public bool isGO;
+    public bool gameWon;
 
     private void Awake()
     {
@@ -41,7 +42,16 @@ public class GameController : MonoBehaviour
 
         if(applesAmount == 0)
         {
-            level++;
+            if (level == 4)
+            {
+                level = 0;
+                gameWon = true;
+            }
+            else
+            {
+                level++;
+            }
+
             SceneManager.LoadScene(level);
         }
     }

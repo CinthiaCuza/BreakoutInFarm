@@ -8,6 +8,7 @@ public class LevelController : MonoBehaviour
     public GameObject panel;
     public GameObject startPanel;
     public GameObject goPanel;
+    public GameObject winPanel;
 
     public GameObject ball;
     public GameObject gameObjects;
@@ -19,6 +20,11 @@ public class LevelController : MonoBehaviour
         {
             goPanel.SetActive(true);
             GameController.instance.isGO = false;
+        }
+        else if (GameController.instance.gameWon)
+        {
+            winPanel.SetActive(true);
+            GameController.instance.gameWon = false;
         }
         else
         {
