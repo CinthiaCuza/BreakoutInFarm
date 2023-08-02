@@ -4,18 +4,23 @@ using UnityEngine;
 
 public class Paddle : MonoBehaviour
 {
-   // [SerializeField] private float speed;
-    [SerializeField] private float minX;
-    [SerializeField] private float maxX;
+    private float minX;
+    private float maxX;
 
-    //private float valueMov;
+    public float paddleOffsetX = 1.0f;
+    public float paddleOffsetY = 1.0f;
 
     private float fixedYPosition;
     public bool touchBall;
 
+    private Camera mainCamera;
+    private float aspectRatio;
+
     private void Start()
     {
-        fixedYPosition = transform.position.y;
+        mainCamera = Camera.main;
+        aspectRatio = mainCamera.aspect;
+        AdjustPosition();
     }
 
     private void Update()
@@ -27,14 +32,26 @@ public class Paddle : MonoBehaviour
 
             transform.position = newPosition;
         }
-        
 
-        /*valueMov = Input.GetAxis("Horizontal");
-
-        if (valueMov != 0)
+        if (mainCamera.aspect != aspectRatio)
         {
-            transform.Translate(valueMov * speed * Time.deltaTime, 0f, 0f);
-            transform.position = new Vector3(Mathf.Clamp(transform.position.x, minX, maxX), transform.position.y, transform.position.z);
-        }*/
+            aspectRatio = mainCamera.aspect;
+            AdjustPosition();
+        }
+    }
+
+    private void AdjustPosition()
+    {
+        float cameraHeight = mainCamera.orthographicSize;
+        float cameraWidth = cameraHeight * aspectRatio;
+
+        maxX = (cameraWidth - paddleOffsetX) * Mathf.Sign(transform.position.x);
+        minX = -maxX;
+
+        fixedYPosition = (cameraHeight - paddleOffsetY) * Mathf.Sign(transform.position.y);
+
+        Vector3 newPosition = transform.position;
+        newPosition.y = fixedYPosition;
+        transform.position = newPosition;
     }
 }
