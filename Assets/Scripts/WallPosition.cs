@@ -6,28 +6,26 @@ public class WallPosition : MonoBehaviour
 {
     public float wallOffset = 1.0f; 
 
-    private Camera mainCamera;
     private float aspectRatio;
 
     private void Start()
     {
-        mainCamera = Camera.main;
-        aspectRatio = mainCamera.aspect;
+        aspectRatio = Camera.main.aspect;
         RepositionWall();
     }
 
     private void Update()
     {
-        if (mainCamera.aspect != aspectRatio)
+        if (Camera.main.aspect != aspectRatio)
         {
-            aspectRatio = mainCamera.aspect;
+            aspectRatio = Camera.main.aspect;
             RepositionWall();
         }
     }
 
     private void RepositionWall()
     {
-        float cameraHeight = mainCamera.orthographicSize;
+        float cameraHeight = Camera.main.orthographicSize;
         float cameraWidth = cameraHeight * aspectRatio;
 
         Vector3 newPosition = transform.position;

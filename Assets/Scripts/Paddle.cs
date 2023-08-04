@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Paddle : MonoBehaviour
 {
-    private float minX;
     private float maxX;
 
     public float paddleOffsetX = 1.0f;
@@ -13,13 +12,11 @@ public class Paddle : MonoBehaviour
     private float fixedYPosition;
     public bool touchBall;
 
-    private Camera mainCamera;
     private float aspectRatio;
 
     private void Start()
     {
-        mainCamera = Camera.main;
-        aspectRatio = mainCamera.aspect;
+        aspectRatio = Camera.main.aspect;
         AdjustPosition();
     }
 
@@ -28,30 +25,24 @@ public class Paddle : MonoBehaviour
         if (touchBall)
         {
             Vector2 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Vector2 newPosition = new Vector2(Mathf.Clamp(mouseWorldPosition.x, minX, maxX), fixedYPosition);
+            Vector2 newPosition = new Vector2(Mathf.Clamp(mouseWorldPosition.x, -maxX, maxX), fixedYPosition);
 
             transform.position = newPosition;
         }
 
-        if (mainCamera.aspect != aspectRatio)
+        if (Camera.main.aspect != aspectRatio)
         {
-            aspectRatio = mainCamera.aspect;
+            aspectRatio = Camera.main.aspect;
             AdjustPosition();
         }
     }
 
     private void AdjustPosition()
     {
-        float cameraHeight = mainCamera.orthographicSize;
+        float cameraHeight = Camera.main.orthographicSize;
         float cameraWidth = cameraHeight * aspectRatio;
 
         maxX = (cameraWidth - paddleOffsetX) * Mathf.Sign(transform.position.x);
-        minX = -maxX;
-
         fixedYPosition = (cameraHeight - paddleOffsetY) * Mathf.Sign(transform.position.y);
-
-        Vector3 newPosition = transform.position;
-        newPosition.y = fixedYPosition;
-        transform.position = newPosition;
     }
 }
