@@ -2,6 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System;
+
+[Serializable]
+public class Sound
+{
+    public string clipName;
+    public AudioClip clip;
+}
 
 public class GameController : MonoBehaviour
 {
@@ -15,6 +23,9 @@ public class GameController : MonoBehaviour
 
     public bool isGO;
     public bool gameWon;
+
+    public Sound[] sfxSounds;
+    public AudioSource sfxSource;
 
     private void Awake()
     {
@@ -31,6 +42,8 @@ public class GameController : MonoBehaviour
 
     public void GameOver()
     {
+        PlaySFX("Lose");
+
         applesAmount = 0;
         isGO = true;
         SceneManager.LoadScene(level);
@@ -42,6 +55,8 @@ public class GameController : MonoBehaviour
 
         if(applesAmount == 0)
         {
+            PlaySFX("Win");
+
             if (level == 4)
             {
                 level = 0;
@@ -54,6 +69,12 @@ public class GameController : MonoBehaviour
 
             SceneManager.LoadScene(level);
         }
+    }
+
+    public void PlaySFX(string name)
+    {
+        Sound clipToPlay = Array.Find(sfxSounds, x => x.clipName == name);
+        sfxSource.PlayOneShot(clipToPlay.clip);
     }
 }
 

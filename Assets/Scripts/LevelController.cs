@@ -50,4 +50,9 @@ public class LevelController : MonoBehaviour
         GameObject newBall = Instantiate(ball, gameObjects.transform);
         newBall.transform.localScale = new Vector2(ballScale, ballScale);
     }
+
+    public void PlaySound(string name)
+    {
+        GameController.instance.PlaySFX(name);
+    }
 }

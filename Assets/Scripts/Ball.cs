@@ -18,12 +18,16 @@ public class Ball : MonoBehaviour
 
         if (collision.gameObject.CompareTag("Apple"))
         {
+            GameController.instance.PlaySFX("Impact");
+
             Destroy(collision.gameObject);
             GameController.instance.RestApple();
         }
 
         if (collision.gameObject.CompareTag("Paddle"))
         {
+            GameController.instance.PlaySFX("Touch");
+
             if (!collision.gameObject.GetComponent<Paddle>().touchBall) 
                 collision.gameObject.GetComponent<Paddle>().touchBall = true;
         }
